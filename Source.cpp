@@ -3,7 +3,6 @@
 #endif // !heroseStruct
 
 #include<iostream>
-#include<fstream>
 #include<cstring>
 #include <algorithm>
 
@@ -21,6 +20,7 @@ int main()
 {
 	using namespace std;
 
+	srand(time(NULL));
 
 
 	int present = 0;
@@ -114,7 +114,7 @@ int main()
 
 	while(true)
 	{
-	srand(time(NULL));
+	
 
 
 	//стадия пика
@@ -187,7 +187,7 @@ int main()
 				heroesGoodTemp4 = rand() % controlCount;
 				heroesGood[3] = PoolControl1[heroesGoodTemp4];
 				allPicked[3] = PoolControl1[heroesGoodTemp4];
-			} while (IsHeroPicked(allPicked, 10, 3) == true);
+			} while ((IsHeroPicked(allPicked, 10, 3)) == true);
 
 		}
 		else if (sumSupp < 3)																//Выбор саппорта, если сумма сапп<0
@@ -235,7 +235,7 @@ int main()
 				heroTemp5 = rand() % carryCount;
 				heroesGood[4] = PoolCarry1[heroTemp5];
 				allPicked[4] = PoolCarry1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 4) == true && heroesGood[4].carry <= 2);
+			} while (IsHeroPicked(allPicked, 10, 4) == true || heroesGood[4].carry <= 2);
 		}
 		else if (talents[0] == sumHero.support)												//Выбор саппорт 2+
 		{
@@ -244,7 +244,7 @@ int main()
 				heroTemp5 = rand() % supportCount;
 				heroesGood[4] = PoolSupport1[heroTemp5];
 				allPicked[4] = PoolSupport1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 4) == true && heroesGood[4].support <= 2);
+			} while (IsHeroPicked(allPicked, 10, 4) == true || heroesGood[4].support <= 2);
 		}
 		else if (talents[0] == sumHero.control)
 		{
@@ -253,16 +253,16 @@ int main()
 				heroTemp5 = rand() % controlCount;
 				heroesGood[4] = PoolControl1[heroTemp5];
 				allPicked[4] = PoolControl1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 4) == true && heroesGood[4].control <= 2);
+			} while (IsHeroPicked(allPicked, 10, 4) == true || heroesGood[4].control <= 2);
 		}
 		else if (talents[0] == sumHero.nuker)
 		{
 			do
 			{
-				heroTemp5 = rand() % poolSize;
-				heroesGood[4] = heropool[heroTemp5];
-				allPicked[4] = heropool[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 4) == true && heroesGood[4].nuker <= 2);
+				heroTemp5 = rand() % present;
+				heroesGood[4] = CurrentHeroPool[heroTemp5];
+				allPicked[4] = CurrentHeroPool[heroTemp5];
+			} while (IsHeroPicked(allPicked, 10, 4) == true || heroesGood[4].nuker <= 2);
 		}
 		else if (talents[0] == sumHero.durabil)
 		{
@@ -271,15 +271,15 @@ int main()
 				heroTemp5 = rand() % durCount;
 				heroesGood[4] = PoolDur1[heroTemp5];
 				allPicked[4] = PoolDur1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 4) == true && heroesGood[4].durabil <= 2);
+			} while (IsHeroPicked(allPicked, 10, 4) == true || heroesGood[4].durabil <= 2);
 		}
 		else
 			do
 			{
-				heroTemp5 = rand() % poolSize;
-				heroesGood[4] = heropool[heroTemp5];
-				allPicked[4] = heropool[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 4) == true && heroesGood[4].init <= 2);
+				heroTemp5 = rand() % present;
+				heroesGood[4] = CurrentHeroPool[heroTemp5];
+				allPicked[4] = CurrentHeroPool[heroTemp5];
+			} while (IsHeroPicked(allPicked, 10, 4) == true || heroesGood[4].init <= 2);
 
 	}
 
@@ -294,7 +294,7 @@ int main()
 			int heroesBadTemp1 = rand() % controlCount;
 			heroesBad[0] = PoolControl1[heroesBadTemp1];
 			allPicked[5] = PoolControl1[heroesBadTemp1];
-		} while (IsHeroPicked(allPicked, 10, 5) == true&& heroesBad[0].carry<2);
+		} while ((IsHeroPicked(allPicked, 10, 5) == true)|| heroesBad[0].carry<2);
 	}
 	if (playersBad < 4)												//выбор саппорта для 2 команды
 	{
@@ -371,7 +371,16 @@ int main()
 
 		int talents[] = { sumHero.carry ,sumHero.support ,sumHero.control ,sumHero.nuker ,sumHero.durabil ,sumHero.init };
 		int talentArrRange = sizeof(talents) / sizeof(talents[0]);
-		sort(talents, talents + talentArrRange);
+		//sort(talents, talents + talentArrRange);
+		
+		for (int i = 0; i < talentArrRange; i++)
+		{
+			if (talents[0] > talents[i])
+			{
+				talents[0] = talents[i];
+			}
+		}
+
 		if (talents[0] == sumHero.carry)													//Выбор керри 2+
 		{
 			do
@@ -379,7 +388,7 @@ int main()
 				heroTemp5 = rand() % carryCount;
 				heroesBad[4] = PoolCarry1[heroTemp5];
 				allPicked[9] = PoolCarry1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 9) == true && heroesBad[4].carry <= 2);
+			} while (IsHeroPicked(allPicked, 10, 9) == true || heroesBad[4].carry <= 2);
 		}
 		else if (talents[0] == sumHero.support)												//Выбор саппорт 2+
 		{
@@ -388,7 +397,7 @@ int main()
 				heroTemp5 = rand() % supportCount;
 				heroesBad[4] = PoolSupport1[heroTemp5];
 				allPicked[9] = PoolSupport1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 9) == true && heroesBad[4].support <= 2);
+			} while (IsHeroPicked(allPicked, 10, 9) == true || heroesBad[4].support <= 2);
 		}
 		else if (talents[0] == sumHero.control)
 		{
@@ -397,16 +406,16 @@ int main()
 				heroTemp5 = rand() % controlCount;
 				heroesBad[4] = PoolControl1[heroTemp5];
 				allPicked[9] = PoolControl1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 9) == true && heroesBad[4].control <= 2);
+			} while (IsHeroPicked(allPicked, 10, 9) == true || heroesBad[4].control <= 2);
 		}
 		else if (talents[0] == sumHero.nuker)
 		{
 			do
 			{
-				heroTemp5 = rand() % poolSize;
-				heroesBad[4] = heropool[heroTemp5];
-				allPicked[9] = heropool[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 9) == true && heroesBad[4].nuker <= 2);
+				heroTemp5 = rand() % present;
+				heroesBad[4] = CurrentHeroPool[heroTemp5];
+				allPicked[9] = CurrentHeroPool[heroTemp5];
+			} while (IsHeroPicked(allPicked, 10, 9) == true || heroesBad[4].nuker <= 2);
 		}
 		else if (talents[0] == sumHero.durabil)
 		{
@@ -415,15 +424,15 @@ int main()
 				heroTemp5 = rand() % durCount;
 				heroesBad[4] = PoolDur1[heroTemp5];
 				allPicked[9] = PoolDur1[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 9) == true && heroesBad[4].durabil <= 2);
+			} while (IsHeroPicked(allPicked, 10, 9) == true || heroesBad[4].durabil <= 2);
 		}
 		else
 			do
 			{
-				heroTemp5 = rand() % poolSize;
-				heroesBad[4] = heropool[heroTemp5];
-				allPicked[9] = heropool[heroTemp5];
-			} while (IsHeroPicked(allPicked, 10, 9) == true && heroesBad[4].init <= 2);
+				heroTemp5 = rand() % present;
+				heroesBad[4] = CurrentHeroPool[heroTemp5];
+				allPicked[9] = CurrentHeroPool[heroTemp5];
+			} while (IsHeroPicked(allPicked, 10, 9) == true || heroesBad[4].init <= 2);
 
 	}
 
@@ -435,18 +444,33 @@ int main()
 	
 	for (int i = 0; i < 10; i++)
 	{
-		if (allPicked[i].hero_id != 0)
+		if (allPicked[i].hero_id != temp.hero_id)
 		{
 			commands += allPicked[i].command;
 			commands += ", ";
 		}
 	}
-	if(commands.size()>0)
-		commands.erase(commands.size() - 1);
+	if (commands.size() > 0)
+	{
+		commands.erase(commands.size() - 2);
+		
+	}
+
 	string prefase = "dota_bot_force_pick ";
 	cout << prephrase << "\n\n";
 	cout << prefase<<commands << "\n\n";
 
+	/*bool finalCheck = false;
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j=0; j < 10; j++)
+			if (j != i)
+				if (allPicked[i].hero_id == allPicked[j].hero_id && allPicked[i].hero_id != 999)
+					finalCheck = true;
+	}
+
+	if (finalCheck == true)
+		cout << "\n\n\t\tThere is some mistakes!\n\n";*/
 }
 
 delete[] CurrentHeroPool;
@@ -632,12 +656,15 @@ bool IsHeroPicked(hero allPicked[], int sizeAll,int position)
 	bool isPicked = false;
 
 	
-	for (int i = 0; i < sizeAll; i++)
+	for (int i = 0; i <=position; i++)
 	{
 		if (position != i)
 		{
-			if (allPicked[position].hero_id == allPicked[i].hero_id && allPicked[position].hero_id != temp.hero_id)		//проверка всех героев по id
+			if (allPicked[position].hero_id == allPicked[i].hero_id && allPicked[position].hero_id != temp.hero_id)	//проверка всех героев по id
+			{
 				isPicked = true;
+				break;
+			}
 		}
 	}
 	

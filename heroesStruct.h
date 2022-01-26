@@ -10,7 +10,7 @@ struct hero
 {
 	bool inbot = false;
 	char name[20] = {};
-	unsigned hero_id = 0;
+	unsigned hero_id = 999;
 	char command[50] = {};
 	short range = MELEE;
 	int carry = 0;
